@@ -1,0 +1,5 @@
+body{font-family:Arial, Helvetica, sans-serif; background:#f6f7fb; color:#222; margin:0; padding:20px}
+main{max-width:720px;margin:30px auto;background:#fff;padding:22px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.06)}
+h1{margin:0 0 10px;font-size:22px}
+.btn{display:inline-block;margin:10px 10px 0 0;padding:10px 16px;background:#2b6ef6;color:#fff;border-radius:8px;text-decoration:none}
+.btn.secondary{background:#6b7280}
